@@ -21,8 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'signature' => SignatureMiddleware::class,
         ]);
-        $middleware->web(append:[
-            LanguageMiddleware::class
+        $middleware->web(append: [
+            LanguageMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

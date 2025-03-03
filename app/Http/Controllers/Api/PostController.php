@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Helpers\Post\PostHelper;
-use App\Http\Requests\PostRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     private $post;
+
     public function __construct()
     {
-        $this->post = new PostHelper();
+        $this->post = new PostHelper;
     }
 
     /**
@@ -29,11 +30,11 @@ class PostController extends Controller
 
         $posts = $this->post->getAll($filter, $request->page ?? 1, $request->item_per_page ?? 25, $request->sort ?? '');
 
-        if (!$posts['status']) {
+        if (! $posts['status']) {
             return response()->failed($posts['error']);
         }
 
-        if (!request()->wantsJson()) {
+        if (! request()->wantsJson()) {
             return view('admin.post.index', ['posts' => $posts['data']['data']]);
         }
 
@@ -55,7 +56,7 @@ class PostController extends Controller
 
         $posts = $this->post->getTrashed($filter, $request->page, $request->item_per_page, $request->sort ?? '');
 
-        if (!$posts['status']) {
+        if (! $posts['status']) {
             return response()->failed($post['error']);
         }
 
@@ -81,7 +82,7 @@ class PostController extends Controller
         $payload = $request->only(['title', 'slug', 'category_name', 'body', 'photo']);
         $post = $this->post->store($payload);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 
@@ -95,7 +96,7 @@ class PostController extends Controller
     {
         $post = $this->post->getById($id);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 
@@ -106,7 +107,7 @@ class PostController extends Controller
     {
         $post = $this->post->getBySlug($slug);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 
@@ -125,7 +126,7 @@ class PostController extends Controller
         $payload = $request->only(['id', 'title', 'slug', 'category_name', 'body', 'photo']);
         $post = $this->post->update($payload, $id);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
     }
@@ -137,7 +138,7 @@ class PostController extends Controller
     {
         $post = $this->post->delete($id);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 

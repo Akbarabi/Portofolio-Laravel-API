@@ -4,16 +4,16 @@ namespace App\Helpers\Post;
 
 use App\Helpers\Venturo;
 use App\Models\PostModel;
-use Illuminate\Support\Facades\Hash;
 
 class PostHelper extends Venturo
 {
     public const POST_PHOTO_DIRECTORY = 'photo-post';
 
     private $post;
+
     public function __construct()
     {
-        $this->post = new PostModel();
+        $this->post = new PostModel;
     }
 
     public function getAll(array $filter, int $page = 1, int $itemPerPage = 0, string $sort = '')
@@ -30,7 +30,7 @@ class PostHelper extends Venturo
 
             return [
                 'status' => true,
-                'data' => $posts
+                'data' => $posts,
             ];
         } catch (\Throwable $th) {
             return [
@@ -54,7 +54,7 @@ class PostHelper extends Venturo
 
             return [
                 'status' => true,
-                'data' => $posts
+                'data' => $posts,
             ];
         } catch (\Throwable $th) {
             return [
@@ -78,7 +78,7 @@ class PostHelper extends Venturo
 
             return [
                 'status' => true,
-                'data' => $post
+                'data' => $post,
             ];
         } catch (\Throwable $th) {
             return [
@@ -104,7 +104,7 @@ class PostHelper extends Venturo
 
             return [
                 'status' => true,
-                'data' => $post
+                'data' => $post,
             ];
         } catch (\Throwable $th) {
             return [
@@ -216,7 +216,7 @@ class PostHelper extends Venturo
     private function uploadGetPayload(array $payload)
     {
 
-        if (!empty($payload['photo'])) {
+        if (! empty($payload['photo'])) {
             $fileName = $this->generateFileName($payload['photo'], 'POST_'.date('Ymdhis'));
             $photo = $payload['photo']->storeAs(self::POST_PHOTO_DIRECTORY, $fileName, 'public');
             $payload['photo'] = $photo;
@@ -230,7 +230,7 @@ class PostHelper extends Venturo
     private function deleteImages(array $payload)
     {
 
-        if (!empty($payload['photo'])) {
+        if (! empty($payload['photo'])) {
             Storage::disk('public')->delete($payload['photo']);
         }
     }

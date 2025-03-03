@@ -66,7 +66,7 @@ class AuthHelper extends Venturo
             $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
 
             if ($removeToken) {
-                //return response JSON
+                // return response JSON
                 return [
                     'status' => true,
                     'message' => 'Logout Success!',

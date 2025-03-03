@@ -2,19 +2,18 @@
 
 namespace App\Models;
 
-use App\Http\Traits\Ulid;
-use App\Models\PostModel;
 use App\Helpers\SlugHelper;
+use App\Http\Traits\Ulid;
 use App\Repository\CrudInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PostModel extends Model implements CrudInterface
 {
-    use Ulid;
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
+    use Ulid;
 
     protected $table = 'posts';
 
@@ -49,7 +48,7 @@ class PostModel extends Model implements CrudInterface
 
         return [
             'total' => $total,
-            'data' => $list
+            'data' => $list,
         ];
     }
 
@@ -72,7 +71,7 @@ class PostModel extends Model implements CrudInterface
 
         return [
             'total' => $total,
-            'list' => $list
+            'list' => $list,
         ];
     }
 
@@ -89,6 +88,7 @@ class PostModel extends Model implements CrudInterface
     public function store(array $payload)
     {
         $payload['slug'] = SlugHelper::createUniqueSlug($payload['title'], PostModel::class);
+
         return $this->create($payload);
     }
 
@@ -98,6 +98,7 @@ class PostModel extends Model implements CrudInterface
         if ($model->getOriginal('title') != $payload['title']) {
             $payload['slug'] = SlugHelper::createUniqueSlug($payload['title'], PostModel::class);
         }
+
         return $model->update($payload);
     }
 

@@ -11,9 +11,10 @@ use Illuminate\Http\Request;
 class BladePostController extends Controller
 {
     private $postHelper;
+
     public function __construct()
     {
-        $this->postHelper = new PostHelper();
+        $this->postHelper = new PostHelper;
     }
 
     public function index(Request $request)
@@ -42,7 +43,7 @@ class BladePostController extends Controller
 
         $post = $this->postHelper->create($payload);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 
@@ -61,7 +62,7 @@ class BladePostController extends Controller
 
         $post = $this->postHelper->update($payload, $payload['id']);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 
@@ -72,7 +73,7 @@ class BladePostController extends Controller
     {
         $post = $this->postHelper->delete($id);
 
-        if (!$post['status']) {
+        if (! $post['status']) {
             return response()->failed($post['error']);
         }
 

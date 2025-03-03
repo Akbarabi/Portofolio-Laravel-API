@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class PostResource extends JsonResource
 {
@@ -21,8 +21,8 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'category_name' => $this->category_name,
             'body' => $this->body,
-            'photo' => !empty($htis->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
-            'view_count' => $this->views
+            'photo' => ! empty($htis->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
+            'view_count' => $this->views,
         ];
     }
 }

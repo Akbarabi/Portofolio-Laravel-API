@@ -23,7 +23,7 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
     public $timestamps = true;
 
     protected $attributes = [
-        'user_roles_id' => "f9e49521-4a4a-4b3b-b0ca-73f36c8aef47", // memberi nilai default = 1 pada kolom user_roles_id
+        'user_roles_id' => 'f9e49521-4a4a-4b3b-b0ca-73f36c8aef47', // memberi nilai default = 1 pada kolom user_roles_id
     ];
 
     /**

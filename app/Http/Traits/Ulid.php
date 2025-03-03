@@ -5,7 +5,8 @@ namespace App\Http\Traits;
 use Illuminate\Support\Str;
 
 trait Ulid
-{   /**
+{
+    /**
      * Boot function from Laravel.
      */
     protected static function boot()
@@ -17,6 +18,7 @@ trait Ulid
             }
         });
     }
+
     /**
      * Get the value indicating whether the IDs are incrementing.
      *
@@ -25,7 +27,9 @@ trait Ulid
     public function getIncrementing()
     {
         return false;
-    }   /**
+    }
+
+    /**
      * Get the auto-incrementing key type.
      *
      * @return string

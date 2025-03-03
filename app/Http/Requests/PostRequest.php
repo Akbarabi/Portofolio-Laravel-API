@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use ProtoneMedia\LaravelMixins\Request\ConvertsBase64ToFiles;
 
 class PostRequest extends FormRequest
@@ -11,10 +11,12 @@ class PostRequest extends FormRequest
     use ConvertsBase64ToFiles;
 
     public $validatior;
+
     public function failedValidation(Validator $validator)
     {
         $this->validator = $validator;
     }
+
     /**
      * Determine if the users is authorized to make this request.
      */
