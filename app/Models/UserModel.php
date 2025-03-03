@@ -23,7 +23,7 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
     public $timestamps = true;
 
     protected $attributes = [
-        'm_user_roles_id' => 1, // memberi nilai default = 1 pada kolom m_user_roles_id
+        'user_roles_id' => "f9e49521-4a4a-4b3b-b0ca-73f36c8aef47", // memberi nilai default = 1 pada kolom user_roles_id
     ];
 
     /**
@@ -36,7 +36,7 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
         'email',
         'password',
         'photo',
-        'm_user_roles_id',
+        'user_roles_id',
         'phone_number',
     ];
 
@@ -45,7 +45,7 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
      *
      * @var string
      */
-    protected $table = 'm_user';
+    protected $table = 'users';
 
     /**
      * Relation to Role
@@ -54,7 +54,7 @@ class UserModel extends Authenticatable implements CrudInterface, JWTSubject
      */
     public function role()
     {
-        return $this->hasOne(RoleModel::class, 'id', 'm_user_roles_id');
+        return $this->hasOne(RoleModel::class, 'id', 'user_roles_id');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\JwtMiddleware;
+use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\SignatureMiddleware;
 use Illuminate\Foundation\Application;
@@ -19,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.api' => JwtMiddleware::class,
             'role' => RoleMiddleware::class,
             'signature' => SignatureMiddleware::class,
+        ]);
+        $middleware->web(append:[
+            LanguageMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

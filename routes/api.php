@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SiteController;
 use App\Http\Controllers\Api\UserController;
@@ -35,6 +36,13 @@ Route::prefix('v1')->group(function () {
     Route::post('/roles', [RoleController::class, 'store']); //->middleware(['auth.api', 'role:roles.create']);
     Route::put('/roles', [RoleController::class, 'update']); //->middleware(['auth.api', 'role:roles.update']);
     Route::delete('/roles/{id}', [RoleController::class, 'destroy']); //->middleware(['auth.api', 'role:roles.delete']);
+
+    Route::get('/post', [PostController::class, 'index']);
+    Route::get('/post-id/{id}', [PostController::class, 'show']);
+    Route::get('/post/{slug}', [PostController::class, 'getBySlug']);
+    Route::post('/post', [PostController::class, 'store']);
+    Route::put('/post', [PostController::class, 'update']);
+    Route::delete('/post/{id}', [PostController::class, 'destroy']);
 });
 
 Route::get('/', function () {

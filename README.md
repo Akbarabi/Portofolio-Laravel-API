@@ -36,7 +36,7 @@ DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=core_laravel_11_venturo
-DB_USERNAME=root
+DB_usersNAME=root
 DB_PASSWORD=
 ```
 - Generate Database & Seeder

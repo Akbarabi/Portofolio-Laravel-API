@@ -21,7 +21,7 @@ class RoleModel extends Model implements CrudInterface
         'access',
     ];
 
-    protected $table = 'm_user_roles';
+    protected $table = 'user_roles';
 
     public function drop(string $id)
     {
