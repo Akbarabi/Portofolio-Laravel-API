@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::view("/", 'guest.index')->name('guest.index');
 Route::view("/about", 'guest.about')->name('guest.about');
 Route::view("/project", 'guest.project')->name('guest.project');
+Route::view("/noidea", 'utility.noidea')->name('guest.noidea');
 
 Route::view('/dashboard', 'admin.dashboard.index')->name('dashboard.index');
 

@@ -1,7 +1,4 @@
 @extends('layouts.main-guest')
 
 @section('content')
-    <div class="min-h-screen">
-        
-    </div>
 @endsection

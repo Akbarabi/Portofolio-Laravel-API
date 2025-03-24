@@ -15,7 +15,9 @@
 <body class="p-0 m-0 bg-[#FDE047] text-[#1D1D1D]">
     @include('components.navbar')
 
-    @yield('content')
+    <div class="p-8">
+        @yield('content')
+    </div>
 </body>
 
 </html>
