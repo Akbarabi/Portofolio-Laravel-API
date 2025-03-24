@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use App\Helpers\SlugHelper;
 use App\Http\Traits\Ulid;
+use App\Models\PostModel;
+use App\Helpers\SlugHelper;
 use App\Repository\CrudInterface;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PostModel extends Model implements CrudInterface
 {
@@ -43,7 +44,7 @@ class PostModel extends Model implements CrudInterface
         }
 
         $total = $post->count();
-        $sort = $sort ?: 'id DESC';
+        $sort = $sort ?: 'created_at DESC';
         $list = $post->skip($skip)->take($itemPerPage)->orderByRaw($sort)->get();
 
         return [
@@ -55,7 +56,7 @@ class PostModel extends Model implements CrudInterface
     public function getTrashed(array $filter, int $page, int $itemPerPage, string $sort)
     {
         $skip = ($page * $itemPerPage) - $itemPerPage;
-        $post = $this->onlyTrashed()->query();
+        $post = $this->onlyTrashed();
 
         if (! empty($filter['title'])) {
             $post->where('title', 'LIKE', '%'.$filter['title'].'%');
@@ -66,18 +67,18 @@ class PostModel extends Model implements CrudInterface
         }
 
         $total = $post->count();
-        $sort = $sort ?? 'id DESC';
+        $sort = $sort ?: 'created_at DESC';
         $list = $post->skip($skip)->take($itemPerPage)->orderByRaw($sort)->get();
 
         return [
             'total' => $total,
-            'list' => $list,
+            'data' => $list,
         ];
     }
 
     public function getById(string $id)
     {
-        return $this->find($id);
+        return $this->withTrashed()->find($id);
     }
 
     public function getBySlug(string $slug)
@@ -102,6 +103,11 @@ class PostModel extends Model implements CrudInterface
         return $model->update($payload);
     }
 
+    public function restore(string $id)
+    {
+        return $this->onlyTrashed()->where('id', $id)->restore();
+    }
+
     public function drop(string $id)
     {
         return $this->find($id)->delete();
@@ -109,6 +115,6 @@ class PostModel extends Model implements CrudInterface
 
     public function forceDrop(string $id)
     {
-        return $this->find($id)->forceDelete();
+        return $this->onlyTrashed()->find($id)->forceDelete();
     }
 }

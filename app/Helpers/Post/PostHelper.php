@@ -4,22 +4,24 @@ namespace App\Helpers\Post;
 
 use App\Helpers\Venturo;
 use App\Models\PostModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostHelper extends Venturo
 {
     public const POST_PHOTO_DIRECTORY = 'photo-post';
 
-    private $post;
+    private $postModel;
 
     public function __construct()
     {
-        $this->post = new PostModel;
+        $this->postModel = new PostModel();
     }
 
     public function getAll(array $filter, int $page = 1, int $itemPerPage = 0, string $sort = '')
     {
         try {
-            $posts = $this->post->getAll($filter, $page, $itemPerPage, $sort);
+            $posts = $this->postModel->getAll($filter, $page, $itemPerPage, $sort);
 
             if (empty($posts)) {
                 return [
@@ -43,7 +45,7 @@ class PostHelper extends Venturo
     public function getTrashed(array $filter, int $page = 1, int $itemPerPage = 0, string $sort = '')
     {
         try {
-            $posts = $this->post->getTrashed($filter, $page, $itemPerPage, $sort);
+            $posts = $this->postModel->getTrashed($filter, $page, $itemPerPage, $sort);
 
             if (empty($posts)) {
                 return [
@@ -67,7 +69,7 @@ class PostHelper extends Venturo
     public function getById(string $id)
     {
         try {
-            $post = $this->post->getById($id);
+            $post = $this->postModel->getById($id);
 
             if (empty($post)) {
                 return [
@@ -91,7 +93,7 @@ class PostHelper extends Venturo
     public function getBySlug(string $slug)
     {
         try {
-            $post = $this->post->getBySlug($slug);
+            $post = $this->postModel->getBySlug($slug);
 
             if (empty($post)) {
                 return [
@@ -100,7 +102,7 @@ class PostHelper extends Venturo
                 ];
             }
 
-            DB::table('post')->where('id', $post->id)->increment('views');
+            DB::table('posts')->where('id', $post->id)->increment('views');
 
             return [
                 'status' => true,
@@ -119,7 +121,7 @@ class PostHelper extends Venturo
         try {
             $payload = $this->uploadGetPayload($payload);
 
-            $post = $this->post->store($payload);
+            $post = $this->postModel->store($payload);
 
             return [
                 'status' => true,
@@ -137,9 +139,9 @@ class PostHelper extends Venturo
     {
         try {
             $payload = $this->uploadGetPayload($payload);
-            $this->post->edit($payload, $id);
+            $this->postModel->edit($payload, $id);
 
-            $post = $this->post->getById($id);
+            $post = $this->postModel->getById($id);
 
             if (empty($post)) {
                 return [
@@ -160,12 +162,39 @@ class PostHelper extends Venturo
         }
     }
 
+    public function restore(string $id)
+    {
+        try {
+            $post = $this->getById($id);
+
+            $this->postModel->restore($id);
+
+            if (empty($post)) {
+                return [
+                    'status' => false,
+                    'data' => null,
+                ];
+            }
+
+            return [
+                'status' => true,
+                'data' => $post,
+            ];
+
+        } catch (\Throwable $th) {
+            return [
+                'status' => false,
+                'error' => $th->getMessage(),
+            ];
+        }
+    }
+
     public function delete(string $id)
     {
         try {
-            $post = $this->post->getById($id);
+            $post = $this->postModel->getById($id);
 
-            $this->post->drop($id);
+            $this->postModel->drop($id);
 
             if (empty($post)) {
                 return [
@@ -189,10 +218,10 @@ class PostHelper extends Venturo
     public function forceDelete(string $id)
     {
         try {
-            $post = $this->post->getById($id);
+            $post = $this->getById($id);
 
             $this->deleteImages($post);
-            $this->post->forceDrop($id);
+            $this->postModel->forceDrop($id);
 
             if (empty($post)) {
                 return [

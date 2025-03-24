@@ -36,6 +36,23 @@ class AuthController extends Controller
         return response()->success($login['data']);
     }
 
+    public function refresh(Request $request)
+    {
+        $token = $request->bearerToken();
+
+        if (!$token) {
+            return response()->failed(['Token Required'], 401);
+        }
+
+        $refresh = AuthHelper::refresh($token);
+
+        if (!$refresh['status']) {
+            return response()->failed($refresh['error'], 422);
+        }
+
+        return response()->success($refresh['data'], 'Refresh Success!');
+    }
+
     /**
      * Mengambil profile user yang sedang login
      *

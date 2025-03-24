@@ -5,10 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use DateTime;
 use Exception;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use PHPOpenSourceSaver\JWTAuth\Http\Middleware\BaseMiddleware;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenBlacklistedException;
 
 class JwtMiddleware extends BaseMiddleware
 {
@@ -51,6 +52,8 @@ class JwtMiddleware extends BaseMiddleware
                 return response()->failed(['Token yang anda gunakan tidak valid'], 403);
             } elseif ($e instanceof TokenExpiredException) {
                 return response()->failed(['Token anda telah kadaluarsa, silahkan login ulang'], 403);
+            } elseif ($e instanceof TokenBlacklistedException) {
+                return response()->failed(['Token yang anda gunakan telah masuk daftar hitam'], 403);
             } else {
                 return response()->failed(['Silahkan login terlebih dahulu. '.$e->getMessage()], 403);
             }

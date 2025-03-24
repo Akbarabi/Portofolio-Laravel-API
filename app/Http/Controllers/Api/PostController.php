@@ -14,7 +14,7 @@ class PostController extends Controller
 
     public function __construct()
     {
-        $this->post = new PostHelper;
+        $this->post = new PostHelper();
     }
 
     /**
@@ -32,10 +32,6 @@ class PostController extends Controller
 
         if (! $posts['status']) {
             return response()->failed($posts['error']);
-        }
-
-        if (! request()->wantsJson()) {
-            return view('admin.post.index', ['posts' => $posts['data']['data']]);
         }
 
         return response()->success([
@@ -86,7 +82,7 @@ class PostController extends Controller
             return response()->failed($post['error']);
         }
 
-        return response()->success(new PostResource($post), 'Post successfully created');
+        return response()->success(new PostResource($post['data']), 'Post successfully created');
     }
 
     /**
@@ -100,7 +96,7 @@ class PostController extends Controller
             return response()->failed($post['error']);
         }
 
-        return response()->success(new PostResource($post), 'Post is found');
+        return response()->success(new PostResource($post['data']), 'Post is found');
     }
 
     public function getBySlug(string $slug)
@@ -111,24 +107,26 @@ class PostController extends Controller
             return response()->failed($post['error']);
         }
 
-        return response()->success(new PostResource($post), 'Post is found');
+        return response()->success(new PostResource($post['data']), 'Post is found');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors());
         }
 
         $payload = $request->only(['id', 'title', 'slug', 'category_name', 'body', 'photo']);
-        $post = $this->post->update($payload, $id);
+        $post = $this->post->update($payload, $payload['id']);
 
         if (! $post['status']) {
             return response()->failed($post['error']);
         }
+
+        return response()->success(new PostResource($post['data']), 'Post successfully updated');
     }
 
     /**
@@ -142,6 +140,6 @@ class PostController extends Controller
             return response()->failed($post['error']);
         }
 
-        return response()->success($post, 'Post successfully deleted');
+        return response()->success($post['data'], 'Post successfully deleted');
     }
 }

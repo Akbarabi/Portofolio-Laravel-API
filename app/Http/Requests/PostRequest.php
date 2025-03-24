@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 use ProtoneMedia\LaravelMixins\Request\ConvertsBase64ToFiles;
 
 class PostRequest extends FormRequest
@@ -42,7 +43,7 @@ class PostRequest extends FormRequest
     private function createRules(): array
     {
         return [
-            'title' => 'required|max:100',
+            'title' => 'required|min:5|max:100',
             'category_name' => 'required',
             'body' => 'required',
             'photo' => 'nullable|file|image',
@@ -52,7 +53,7 @@ class PostRequest extends FormRequest
     private function updateRules(): array
     {
         return [
-            'id' => 'required|exists:post,id',
+            'id' => 'required|exists:posts,id',
             'title' => 'required|max:100',
             'category_name' => 'required',
             'body' => 'required',

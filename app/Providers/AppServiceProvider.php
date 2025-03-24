@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Response;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,6 +65,8 @@ class AppServiceProvider extends ServiceProvider
 
             return Response::make($content, $httpCode, ['signature' => $signature]);
         });
+
+        Paginator::useTailwind();
     }
 
     /**

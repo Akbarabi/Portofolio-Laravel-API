@@ -2,10 +2,13 @@
 
 namespace App\Helpers\User;
 
+use DateTime;
+use Exception;
 use App\Helpers\Venturo;
 use App\Http\Resources\User\UserResource;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
+use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenExpiredException;
 
 /**
  * Helper khusus untuk authentifikasi pengguna
@@ -43,6 +46,41 @@ class AuthHelper extends Venturo
             'status' => true,
             'data' => self::createNewToken($token),
         ];
+    }
+
+    public static function refresh($token)
+    {
+        try {
+            $userModel = JWTAuth::parseToken()->authenticate();
+            $userToken = JWTAuth::parseToken()->getPayload()->get('user');
+
+            $updatedDb = new DateTime($userModel['updated_security']);
+            $updatedToken = new DateTime($userToken['updated_security']);
+
+        } catch (JWTException $e) {
+            if($e instanceof TokenExpiredException) {
+                $newToken = JWTAuth::refresh($token);
+                $userModel = JWTAuth::parseToken()->authenticate();
+                $userToken = JWTAuth::parseToken()->getPayload()->get('user');
+
+                if(!$newToken) {
+                    return [
+                        'status' => false,
+                        'error' => ['Could not refresh token.'],
+                    ];
+                }
+
+                return [
+                    'status' => true,
+                    'data' => self::createNewToken($newToken),
+                ];
+            } else {
+                return [
+                    'status' => false,
+                    'error' => $e->getMessage(),
+                ];
+            }
+        }
     }
 
     /**

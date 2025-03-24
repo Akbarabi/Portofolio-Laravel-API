@@ -21,7 +21,7 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'category_name' => $this->category_name,
             'body' => $this->body,
-            'photo' => ! empty($htis->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
+            'photo_url' => ! empty($htis->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
             'view_count' => $this->views,
         ];
     }
