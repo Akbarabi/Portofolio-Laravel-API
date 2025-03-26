@@ -29,26 +29,24 @@ Route::prefix('v1')->group(function () {
         Route::post('/auth/refresh', [AuthController::class, 'refresh']);
     });
 
-    Route::middleware('auth.api')->group(function () {
-        Route::get('/users', [UserController::class, 'index']); // ->middleware(['auth.api', 'role:user.view']);
-        Route::get('/users/{id}', [UserController::class, 'show']); // ->middleware(['auth.api', 'role:user.view']);
-        Route::post('/users', [UserController::class, 'store']); // ->middleware(['auth.api', 'role:user.create|roles.view']);
-        Route::put('/users/{id}', [UserController::class, 'update']); // ->middleware(['auth.api', 'role:user.update||roles.view']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']); // ->middleware(['auth.api', 'role:user.delete']);
+    Route::get('/users', [UserController::class, 'index']); // ->middleware(['auth.api', 'role:user.view']);
+    Route::get('/users/{id}', [UserController::class, 'show']); // ->middleware(['auth.api', 'role:user.view']);
+    Route::post('/users', [UserController::class, 'store']); // ->middleware(['auth.api', 'role:user.create|roles.view']);
+    Route::put('/users/{id}', [UserController::class, 'update']); // ->middleware(['auth.api', 'role:user.update||roles.view']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']); // ->middleware(['auth.api', 'role:user.delete']);
 
-        Route::get('/roles', [RoleController::class, 'index']); // ->middleware(['auth.api', 'role:roles.view']);
-        Route::get('/roles/{id}', [RoleController::class, 'show']); // ->middleware(['auth.api', 'role:roles.view']);
-        Route::post('/roles', [RoleController::class, 'store']); // ->middleware(['auth.api', 'role:roles.create']);
-        Route::put('/roles', [RoleController::class, 'update']); // ->middleware(['auth.api', 'role:roles.update']);
-        Route::delete('/roles/{id}', [RoleController::class, 'destroy']); // ->middleware(['auth.api', 'role:roles.delete']);
+    Route::get('/roles', [RoleController::class, 'index']); // ->middleware(['auth.api', 'role:roles.view']);
+    Route::get('/roles/{id}', [RoleController::class, 'show']); // ->middleware(['auth.api', 'role:roles.view']);
+    Route::post('/roles', [RoleController::class, 'store']); // ->middleware(['auth.api', 'role:roles.create']);
+    Route::put('/roles', [RoleController::class, 'update']); // ->middleware(['auth.api', 'role:roles.update']);
+    Route::delete('/roles/{id}', [RoleController::class, 'destroy']); // ->middleware(['auth.api', 'role:roles.delete']);
 
-        Route::get('/post', [PostController::class, 'index']);
-        Route::get('/post-id/{id}', [PostController::class, 'show']);
-        Route::get('/post/{slug}', [PostController::class, 'getBySlug']);
-        Route::post('/post', [PostController::class, 'store']);
-        Route::put('/post', [PostController::class, 'update']);
-        Route::delete('/post/{id}', [PostController::class, 'destroy']);
-    });
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/post-id/{id}', [PostController::class, 'show']);
+    Route::get('/posts/{slug}', [PostController::class, 'getBySlug']);
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::put('/posts', [PostController::class, 'update']);
+    Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
     Route::post('/reset-password', [ForgotPasswordController::class, 'reset']);

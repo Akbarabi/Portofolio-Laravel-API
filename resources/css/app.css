@@ -4,6 +4,10 @@
 @source "./../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views";
 @plugin "flowbite/plugin";
 
+html {
+    scroll-behavior: smooth;
+}
+
 ::-webkit-scrollbar {
     display: none;
     -ms-overflow-style: -ms-autohiding-scrollbar; 

@@ -5,11 +5,11 @@
         <!-- Button Section -->
         <div class="fixed bottom-8 right-4 flex flex-row gap-5 z-50">
             {{-- Scroll Button --}}
-            <a href="#detail"
+            <a id="navigate-down"
                 class="text-6xl font-extrabold hover:shadow-[6px_6px_0px_#1D1D1D] px-2 py-2 bg-[#EF4444] border-[5px] border-black rounded-2xl hover:scale-105 transform duration-300 ease-in-out">
                 <i class="mdi mdi-chevron-double-down"></i>
             </a>
-            <a href="#home"
+            <a id="navigate-up"
                 class="text-6xl font-extrabold hover:shadow-[6px_6px_0px_#1D1D1D] px-2 py-2 bg-[#FACC15] border-[5px] border-black rounded-2xl hover:scale-105 transform duration-300 ease-in-out">
                 <i class="mdi mdi-chevron-double-up"></i>
             </a>
@@ -34,7 +34,6 @@
         </section>
 
         <section id="detail" class="min-h-screen">
-
             {{-- Navigate Card --}}
             <div class="flex flex-col md:flex-row space-y-6 md:space-x-10 md:space-y-0">
                 <!-- Card 1 -->
@@ -99,15 +98,65 @@
 
         </section>
     </div>
+@endsection
 
+@push('scripts')
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', event => {
-                event.preventDefault();
-                document.querySelector(anchor.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        const sections = ["home", "detail"];
+        let currentIndex = 0;
+
+        const navUp = document.getElementById('navigate-up');
+        const navDown = document.getElementById('navigate-down');
+
+        function scrollToSection(index) {
+            if (index >= 0 && index < sections.length) {
+                document.getElementById(sections[index]).scrollIntoView({
+                    behavior: "smooth"
+                });
+                currentIndex = index;
+            }
+        }
+
+        function updateCurrentIndex() {
+            let scrollPosition = window.scrollY;
+            let viewportHeight = window.innerHeight;
+
+            sections.forEach((section, index) => {
+                const element = document.getElementById(section);
+                const sectionTop = element.offsetTop;
+                const sectionHeight = element.offsetHeight;
+
+                // Jika posisi scroll berada dalam jangkauan suatu section, update index
+                if (scrollPosition >= sectionTop - viewportHeight / 2 &&
+                    scrollPosition < sectionTop + sectionHeight - viewportHeight / 2) {
+                    currentIndex = index;
+                }
+
+                console.log({
+                    "Section": section,
+                    "Top": sectionTop,
+                    "Height": sectionHeight,
+                    "Scroll Position": scrollPosition,
+                    "Viewport Height": viewportHeight
                 });
             });
+        }
+
+        navUp.addEventListener('click', (event) => {
+            event.preventDefault();
+            scrollToSection(currentIndex - 1);
         });
+
+        navDown.addEventListener('click', (event) => {
+            event.preventDefault();
+            scrollToSection(currentIndex + 1);
+        });
+
+        window.addEventListener('scroll', () => {
+            updateCurrentIndex();
+        });
+
+        // Set index awal berdasarkan posisi scroll saat reload
+        document.addEventListener("DOMContentLoaded", updateCurrentIndex);
     </script>
-@endsection
+@endpush

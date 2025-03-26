@@ -18,6 +18,8 @@
     <div class="p-8">
         @yield('content')
     </div>
+
+    @stack('scripts')
 </body>
 
 </html>
